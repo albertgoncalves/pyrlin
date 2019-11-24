@@ -20,9 +20,10 @@ def select(xs, j, i):
 
 @njit
 def dot_grid_gradient(cxs, cys, j, i, x, y):
-    dx = x - float32(j)
-    dy = y - float32(i)
-    return ((dx * select(cxs, j, i)) + (dy * select(cys, j, i)))
+    return (
+        ((x - float32(j)) * select(cxs, j, i))
+        + ((y - float32(i)) * select(cys, j, i))
+    )
 
 
 @njit
@@ -38,18 +39,29 @@ def perlin(cxs, cys, x, y):
     y1 = y0 + 1
     sx = x - float32(x0)
     sy = y - float32(y0)
-    n0 = dot_grid_gradient(cxs, cys, x0, y0, x, y)
-    n1 = dot_grid_gradient(cxs, cys, x1, y0, x, y)
-    m0 = dot_grid_gradient(cxs, cys, x0, y1, x, y)
-    m1 = dot_grid_gradient(cxs, cys, x1, y1, x, y)
-    return lerp(lerp(n0, n1, sx), lerp(m0, m1, sx), sy)
+    return lerp(
+        lerp(
+            dot_grid_gradient(cxs, cys, x0, y0, x, y),
+            dot_grid_gradient(cxs, cys, x1, y0, x, y),
+            sx,
+        ),
+        lerp(
+            dot_grid_gradient(cxs, cys, x0, y1, x, y),
+            dot_grid_gradient(cxs, cys, x1, y1, x, y),
+            sx,
+        ),
+        sy,
+    )
 
 
 @njit
 def iterate(xs, ys, cxs, cys):
     zs = empty(RES_N, dtype=float32)
     for ij in range(RES_N):
-        i = (ij // RES_N_COL) / float32(RES)
-        j = (ij % RES_N_COL) / float32(RES)
-        zs[ij] = perlin(cxs, cys, j, i)
+        zs[ij] = perlin(
+            cxs,
+            cys,
+            (ij % RES_N_COL) / float32(RES),
+            (ij // RES_N_COL) / float32(RES),
+        )
     return zs
