@@ -23,9 +23,9 @@ Args
 #                           . DESCRIPTION               . BOUNDS
 main.py \
     <seed: int> \           # random seed               [  ?, ?]
-    <n_col: int> \          # number of grid columns    [  1, ?]
-    <n_row: int> \          # number of grid rows       [  1, ?]
-    <resolution: int> \     # interpolation resolution  [  1, ?]
+    <n_col: int> \          # number of grid columns    [  2, ?]
+    <n_row: int> \          # number of grid rows       [  2, ?]
+    <resolution: int> \     # interpolation resolution  [  2, ?]
     <octaves: int> \        # number of octaves         [  1, ?]
     <persistence: float> \  # octave rate of decay      [0.0, ?]
     <plot_x: int> \         # width of plots            [  1, ?]
