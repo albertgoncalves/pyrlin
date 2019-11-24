@@ -20,16 +20,17 @@ $ nix-shell
 Args
 ---
 ```
+#                           . DESCRIPTION               . BOUNDS
 main.py \
-    <seed: int> \           # random seed
-    <n_col: uint> \         # number of grid columns
-    <n_row: uint> \         # number of grid rows
-    <resolution: uint> \    # interpolation resolution
-    <octaves: uint> \       # number of octaves
-    <persistence: float> \  # octave rate of decay
-    <plot_x: uint> \        # width of plots
-    <plot_y: uint> \        # height of plots
-    <grid_plot_pad: float>  # grid plot axis padding
+    <seed: int> \           # random seed               [  ?, ?]
+    <n_col: int> \          # number of grid columns    [  1, ?]
+    <n_row: int> \          # number of grid rows       [  1, ?]
+    <resolution: int> \     # interpolation resolution  [  1, ?]
+    <octaves: int> \        # number of octaves         [  1, ?]
+    <persistence: float> \  # octave rate of decay      [0.0, ?]
+    <plot_x: int> \         # width of plots            [  1, ?]
+    <plot_y: int> \         # height of plots           [  1, ?]
+    <grid_plot_pad: float>  # grid plot axis padding    [0.0, ?]
 ```
 
 Helpful links
