@@ -12,7 +12,8 @@ from noise import iterate, RES_N_COL, RES_N_ROW
 
 WD = environ["WD"]
 SEED = 1
-FIGSIZE = (12, 10)
+FIGSIZE = (5, 4)
+PAD = 0.1
 
 
 def pad_axis(ax, xs, ys, k):
@@ -48,7 +49,7 @@ def plot_grid(xs, ys, cxs, cys, filename):
             zorder=2,
             **kwargs,
         )
-    pad_axis(ax, xs, ys, 0.075)
+    pad_axis(ax, xs, ys, PAD)
     ax.set_aspect("equal")
     tight_layout()
     savefig(filename)

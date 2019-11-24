@@ -1,6 +1,9 @@
 *
 !.gitignore
+!README.md
 !shell.nix
 !.shellhook
 !src/
 !*.py
+!cover/
+!*.png

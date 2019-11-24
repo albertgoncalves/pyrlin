@@ -22,10 +22,8 @@ def select(xs, j, i):
 
 @njit
 def dot_grid_gradient(cxs, cys, j, i, x, y):
-    return (
-        ((x - float32(j)) * select(cxs, j, i))
-        + ((y - float32(i)) * select(cys, j, i))
-    )
+    return ((x - float32(j)) * select(cxs, j, i)) + \
+        ((y - float32(i)) * select(cys, j, i))
 
 
 @njit
@@ -35,7 +33,9 @@ def lerp(a, b, w):
 
 @njit
 def fade(x):
-    return (6 * pow(x, 5)) - (15 * pow(x, 4)) + (10 * pow(x, 3))
+    return (6.0 * x * x * x * x * x) - \
+        (15.0 * x * x * x * x) + \
+        (10.0 * x * x * x)
 
 
 @njit

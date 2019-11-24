@@ -7,8 +7,8 @@ from numpy import empty, float32
 
 PI_2 = 2.0 * pi
 UNIT = sqrt((0.5 * 0.5) + (0.5 * 0.5))
-N_COL = 9  # x, j
-N_ROW = 5  # y, i
+N_COL = 10  # x, j
+N_ROW = 7   # y, i
 N = N_COL * N_ROW
 
 
