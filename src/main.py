@@ -85,7 +85,7 @@ def plot_grid(
 
 def plot_noise(zs, figsize, filename):
     _, ax = subplots(figsize=figsize)
-    ax.matshow(zs, cmap="Greys")
+    ax.matshow(zs, cmap="bone")
     ax.invert_yaxis()
     tight_layout()
     savefig(filename)
