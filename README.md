@@ -12,7 +12,7 @@ Quick start
 ---
 ```
 $ nix-shell
-[nix-shell:path/to/pyrlin]$ python src/main.py 0 3 5 200 6 10 0.2
+[nix-shell:path/to/pyrlin]$ python src/main.py 0 5 5 100 4 0.3 6 6 0.2
 [nix-shell:path/to/pyrlin]$ open out/grid.png
 [nix-shell:path/to/pyrlin]$ open out/noise.png
 ```

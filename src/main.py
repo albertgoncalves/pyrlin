@@ -21,13 +21,16 @@ def args():
             int(argv[2]),
             int(argv[3]),
             int(argv[4]),
-            (int(argv[5]), int(argv[6])),
-            float(argv[7]),
+            int(argv[5]),
+            float(argv[6]),
+            (int(argv[7]), int(argv[8])),
+            float(argv[9]),
         )
     except:
         print(" ".join([
             "$ {} <seed: int> <n_col: int> <n_row: int>".format(argv[0]),
-            "<res: int> <fig_x: int> <fig_y: int> <fig_pad: float>",
+            "<res: int> <octaves: int> <persistence: float> <fig_x: int>"
+            "<fig_y: int> <fig_pad: float>",
         ]))
         exit(1)
 
@@ -104,7 +107,7 @@ def timer(label, function, *args, **kwargs):
 
 
 def main():
-    (s, n_col, n_row, res, figsize, pad) = args()
+    (s, n_col, n_row, res, octaves, persistence, figsize, pad) = args()
     seed(s)
     n = n_col * n_row
     (xs, ys, vxs, vys) = timer("grid.init(...)", init, n, n_col, n_row)
@@ -129,9 +132,12 @@ def main():
         ys,
         vxs,
         vys,
+        n,
         n_col,
         n_row,
         res,
+        octaves,
+        persistence,
     )
     timer(
         "main.plot_noise(...)",
