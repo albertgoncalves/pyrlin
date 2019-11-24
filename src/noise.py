@@ -22,9 +22,7 @@ def lerp(a, b, w):
 
 @njit
 def fade(x):
-    return (6.0 * x * x * x * x * x) - \
-        (15.0 * x * x * x * x) + \
-        (10.0 * x * x * x)
+    return x * x * x * (x * ((x * 6.0) - 15.0) + 10.0)
 
 
 @njit
