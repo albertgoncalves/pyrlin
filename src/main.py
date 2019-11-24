@@ -14,6 +14,25 @@ from noise import iterate
 WD = environ["WD"]
 
 
+def args():
+    try:
+        return (
+            int(argv[1]),
+            int(argv[2]),
+            int(argv[3]),
+            int(argv[4]),
+            int(argv[5]),
+            int(argv[6]),
+            float(argv[7]),
+        )
+    except:
+        print(" ".join([
+            "$ {} <seed: int> <n_col: int> <n_row: int>".format(argv[0]),
+            "<res: int> <fig_x: int> <fig_y: int> <fig_pad: float>",
+        ]))
+        exit(1)
+
+
 def pad_axis(ax, xs, ys, k):
     x_min = min(xs)
     x_max = max(xs)
@@ -79,38 +98,21 @@ def filepath(filename):
     return "{}/out/{}".format(WD, filename)
 
 
-def timer(f, label):
+def timer(label, function, *args, **kwargs):
     t = time()
-    x = f()
-    print("{:>20} : {:.5f}".format(label, time() - t))
+    x = function(*args, **kwargs)
+    print("{:>24} : {:.5f}".format(label, time() - t))
     return x
-
-
-def args():
-    try:
-        return (
-            int(argv[1]),
-            int(argv[2]),
-            int(argv[3]),
-            int(argv[4]),
-            int(argv[5]),
-            int(argv[6]),
-            float(argv[7]),
-        )
-    except:
-        print(" ".join([
-            "$ {} <seed: int> <n_col: int> <n_row: int>".format(argv[0]),
-            "<res: int> <fig_x: int> <fig_y: int> <fig_pad: float>",
-        ]))
-        exit(1)
 
 
 def main():
     (s, n_col, n_row, res, fig_x, fig_y, fig_pad) = args()
     seed(s)
     n = n_col * n_row
-    (xs, ys, cxs, cys) = timer(lambda: init(n, n_col, n_row), "grid.init(...)")
-    timer(lambda: plot_grid(
+    (xs, ys, cxs, cys) = timer("grid.init(...)", init, n, n_col, n_row)
+    timer(
+        "main.plot_grid(...)",
+        plot_grid,
         xs,
         ys,
         cxs,
@@ -122,17 +124,26 @@ def main():
         fig_y,
         fig_pad,
         filepath("grid.png"),
-    ), "main.plot_grid(...)")
-    (zs, res_n_col, res_n_row) = timer(
-        lambda: iterate(xs, ys, cxs, cys, n_col, n_row, res),
-        "noise.iterate(...)",
     )
-    timer(lambda: plot_noise(
+    (zs, res_n_col, res_n_row) = timer(
+        "noise.iterate(...)",
+        iterate,
+        xs,
+        ys,
+        cxs,
+        cys,
+        n_col,
+        n_row,
+        res,
+    )
+    timer(
+        "main.plot_noise(...)",
+        plot_noise,
         zs.reshape(res_n_row, res_n_col),
         fig_x,
         fig_y,
         filepath("noise.png"),
-    ), "main.plot_noise(...)")
+    )
 
 
 if __name__ == "__main__":
