@@ -17,6 +17,21 @@ $ nix-shell
 [nix-shell:path/to/pyrlin]$ open out/noise.png
 ```
 
+Args
+---
+```
+main.py \
+    <seed: int> \           # random seed
+    <n_col: uint> \         # number of grid columns
+    <n_row: uint> \         # number of grid rows
+    <resolution: uint> \    # interpolation resolution
+    <octaves: uint> \       # number of octaves
+    <persistence: float> \  # octave rate of decay
+    <plot_x: uint> \        # width of plots
+    <plot_y: uint> \        # height of plots
+    <grid_plot_pad: float>  # grid plot axis padding
+```
+
 Helpful links
 ---
 * https://en.wikipedia.org/wiki/Perlin_noise

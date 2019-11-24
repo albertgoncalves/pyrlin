@@ -28,9 +28,10 @@ def args():
         )
     except:
         print(" ".join([
-            "$ {} <seed: int> <n_col: int> <n_row: int>".format(argv[0]),
-            "<res: int> <octaves: int> <persistence: float> <fig_x: int>"
-            "<fig_y: int> <fig_pad: float>",
+            "$ python {} <seed: int> <n_col: uint>".format(argv[0]),
+            "<n_row: uint> <resolution: uint> <octaves: uint>",
+            "<persistence: float> <plot_x: uint> <plot_y: uint>",
+            "<grid_plot_pad: float>",
         ]))
         exit(1)
 
@@ -107,7 +108,7 @@ def timer(label, function, *args, **kwargs):
 
 
 def main():
-    (s, n_col, n_row, res, octaves, persistence, figsize, pad) = args()
+    (s, n_col, n_row, resolution, octaves, persistence, figsize, pad) = args()
     seed(s)
     n = n_col * n_row
     (xs, ys, vxs, vys) = timer("grid.init(...)", init, n, n_col, n_row)
@@ -135,7 +136,7 @@ def main():
         n,
         n_col,
         n_row,
-        res,
+        resolution,
         octaves,
         persistence,
     )

@@ -49,10 +49,22 @@ def perlin(vxs, vys, n, n_col, x, y):
 
 
 @njit
-def iterate(xs, ys, vxs, vys, n, n_col, n_row, res, octaves, persistence):
-    res_n_col = (n_col - 1) * res  # x, j
-    res_n_row = (n_row - 1) * res  # y, i
+def iterate(
+    xs,
+    ys,
+    vxs,
+    vys,
+    n,
+    n_col,
+    n_row,
+    resolution,
+    octaves,
+    persistence,
+):
+    res_n_col = (n_col - 1) * resolution  # x, j
+    res_n_row = (n_row - 1) * resolution  # y, i
     res_n = res_n_col * res_n_row
+    res = float32(resolution)
     zs = empty(res_n, dtype=float32)
     for ij in range(res_n):
         z = 0
@@ -65,8 +77,8 @@ def iterate(xs, ys, vxs, vys, n, n_col, n_row, res, octaves, persistence):
                 vys,
                 n,
                 n_col,
-                freq * ((ij % res_n_col) / float32(res)),
-                freq * ((ij // res_n_col) / float32(res)),
+                freq * ((ij % res_n_col) / res),
+                freq * ((ij // res_n_col) / res),
             ) * amp
             max_amp += amp
             amp *= persistence
