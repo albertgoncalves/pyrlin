@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
-# https://en.wikipedia.org/wiki/Perlin_noise
-# https://longwelwind.net/2017/02/09/perlin-noise.html
-# https://rmarcus.info/blog/2018/03/04/perlin-noise.html
-
 from numba import njit
 from numpy import empty, float32
 
 from grid import N_COL, N_ROW
 
-RES = 200
+RES = 100
 RES_N_COL = (N_COL - 1) * RES  # x, j
 RES_N_ROW = (N_ROW - 1) * RES  # y, i
 RES_N = RES_N_COL * RES_N_ROW
