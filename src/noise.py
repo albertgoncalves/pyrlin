@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
+# https://en.wikipedia.org/wiki/Perlin_noise
+
 from numba import njit
 from numpy import empty, float32
 
 from grid import N_COL, N_ROW
 
-# Interpolation
 RES = 100
-RES_N_ROW = (N_ROW - 1) * RES  # y, i
 RES_N_COL = (N_COL - 1) * RES  # x, j
-RES_N = RES_N_ROW * RES_N_COL
+RES_N_ROW = (N_ROW - 1) * RES  # y, i
+RES_N = RES_N_COL * RES_N_ROW
 
 
 @njit

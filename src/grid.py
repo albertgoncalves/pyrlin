@@ -7,10 +7,9 @@ from numpy import empty, float32
 
 PI_2 = 2.0 * pi
 UNIT = sqrt((0.5 * 0.5) + (0.5 * 0.5))
-
-N_ROW = 9   # y, i
 N_COL = 15  # x, j
-N = N_ROW * N_COL
+N_ROW = 9   # y, i
+N = N_COL * N_ROW
 
 
 def point_on_unit_circle():
