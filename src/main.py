@@ -28,9 +28,9 @@ def args():
         )
     except:
         print(" ".join([
-            "$ python {} <seed: int> <n_col: uint>".format(argv[0]),
-            "<n_row: uint> <resolution: uint> <octaves: uint>",
-            "<persistence: float> <plot_x: uint> <plot_y: uint>",
+            "$ python {} <seed: int> <n_col: int>".format(argv[0]),
+            "<n_row: int> <resolution: int> <octaves: int>",
+            "<persistence: float> <plot_x: int> <plot_y: int>",
             "<grid_plot_pad: float>",
         ]))
         exit(1)
