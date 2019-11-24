@@ -21,8 +21,7 @@ def args():
             int(argv[2]),
             int(argv[3]),
             int(argv[4]),
-            int(argv[5]),
-            int(argv[6]),
+            (int(argv[5]), int(argv[6])),
             float(argv[7]),
         )
     except:
@@ -48,45 +47,44 @@ def pad_axis(ax, xs, ys, k):
 def plot_grid(
     xs,
     ys,
-    cxs,
-    cys,
+    vxs,
+    vys,
     n,
     n_col,
     n_row,
-    fig_x,
-    fig_y,
-    fig_pad,
+    figsize,
+    pad,
     filename,
 ):
-    _, ax = subplots(figsize=(fig_x, fig_y))
+    _, ax = subplots(figsize=figsize)
     kwargs = {"alpha": 0.75}
     for i in range(n_row):
         ax.plot([0, n_col - 1], [i, i], linestyle="--", zorder=0, **kwargs)
     for j in range(n_col):
         ax.plot([j, j], [0, n_row - 1], linestyle="--", zorder=0, **kwargs)
     ax.scatter(xs, ys, zorder=1, **kwargs)
-    ax.scatter(xs + cxs, ys + cys, zorder=1, **kwargs)
+    ax.scatter(xs + vxs, ys + vys, zorder=1, **kwargs)
     for ij in range(n):
         arrow(
             xs[ij],
             ys[ij],
-            cxs[ij],
-            cys[ij],
+            vxs[ij],
+            vys[ij],
             head_width=0.075,
             length_includes_head=True,
             color="k",
             zorder=2,
             **kwargs,
         )
-    pad_axis(ax, xs, ys, fig_pad)
+    pad_axis(ax, xs, ys, pad)
     ax.set_aspect("equal")
     tight_layout()
     savefig(filename)
     close()
 
 
-def plot_noise(zs, fig_x, fig_y, filename):
-    _, ax = subplots(figsize=(fig_x, fig_y))
+def plot_noise(zs, figsize, filename):
+    _, ax = subplots(figsize=figsize)
     ax.matshow(zs, cmap="Greys")
     ax.invert_yaxis()
     tight_layout()
@@ -106,7 +104,7 @@ def timer(label, function, *args, **kwargs):
 
 
 def main():
-    (s, n_col, n_row, res, fig_x, fig_y, fig_pad) = args()
+    (s, n_col, n_row, res, figsize, pad) = args()
     seed(s)
     n = n_col * n_row
     (xs, ys, vxs, vys) = timer("grid.init(...)", init, n, n_col, n_row)
@@ -120,9 +118,8 @@ def main():
         n,
         n_col,
         n_row,
-        fig_x,
-        fig_y,
-        fig_pad,
+        figsize,
+        pad,
         filepath("grid.png"),
     )
     (zs, res_n_col, res_n_row) = timer(
@@ -140,8 +137,7 @@ def main():
         "main.plot_noise(...)",
         plot_noise,
         zs.reshape(res_n_row, res_n_col),
-        fig_x,
-        fig_y,
+        figsize,
         filepath("noise.png"),
     )
 
