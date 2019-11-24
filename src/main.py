@@ -3,17 +3,15 @@
 from os import environ
 from random import seed
 from time import time
+from sys import argv
 
 from matplotlib.pyplot import arrow, close, savefig, subplots, tight_layout
 from numpy import max, min
 
-from grid import init, N, N_COL, N_ROW
-from noise import iterate, RES_N_COL, RES_N_ROW
+from grid import init
+from noise import iterate
 
 WD = environ["WD"]
-SEED = 1
-FIGSIZE = (15, 12)
-PAD = 0.1
 
 
 def pad_axis(ax, xs, ys, k):
@@ -28,16 +26,28 @@ def pad_axis(ax, xs, ys, k):
     ax.set_ylim([y_min - pad, y_max + pad])
 
 
-def plot_grid(xs, ys, cxs, cys, filename):
-    _, ax = subplots(figsize=FIGSIZE)
+def plot_grid(
+    xs,
+    ys,
+    cxs,
+    cys,
+    n,
+    n_col,
+    n_row,
+    fig_x,
+    fig_y,
+    fig_pad,
+    filename,
+):
+    _, ax = subplots(figsize=(fig_x, fig_y))
     kwargs = {"alpha": 0.75}
-    for i in range(N_ROW):
-        ax.plot([0, N_COL - 1], [i, i], linestyle="--", zorder=0, **kwargs)
-    for j in range(N_COL):
-        ax.plot([j, j], [0, N_ROW - 1], linestyle="--", zorder=0, **kwargs)
+    for i in range(n_row):
+        ax.plot([0, n_col - 1], [i, i], linestyle="--", zorder=0, **kwargs)
+    for j in range(n_col):
+        ax.plot([j, j], [0, n_row - 1], linestyle="--", zorder=0, **kwargs)
     ax.scatter(xs, ys, zorder=1, **kwargs)
     ax.scatter(xs + cxs, ys + cys, zorder=1, **kwargs)
-    for ij in range(N):
+    for ij in range(n):
         arrow(
             xs[ij],
             ys[ij],
@@ -49,15 +59,15 @@ def plot_grid(xs, ys, cxs, cys, filename):
             zorder=2,
             **kwargs,
         )
-    pad_axis(ax, xs, ys, PAD)
+    pad_axis(ax, xs, ys, fig_pad)
     ax.set_aspect("equal")
     tight_layout()
     savefig(filename)
     close()
 
 
-def plot_noise(zs, filename):
-    _, ax = subplots(figsize=FIGSIZE)
+def plot_noise(zs, fig_x, fig_y, filename):
+    _, ax = subplots(figsize=(fig_x, fig_y))
     ax.matshow(zs, cmap="Greys")
     ax.invert_yaxis()
     tight_layout()
@@ -76,19 +86,51 @@ def timer(f, label):
     return x
 
 
+def args():
+    try:
+        return (
+            int(argv[1]),
+            int(argv[2]),
+            int(argv[3]),
+            int(argv[4]),
+            int(argv[5]),
+            int(argv[6]),
+            float(argv[7]),
+        )
+    except:
+        print(" ".join([
+            "$ {} <seed: int> <n_col: int> <n_row: int>".format(argv[0]),
+            "<res: int> <fig_x: int> <fig_y: int> <fig_pad: float>",
+        ]))
+        exit(1)
+
+
 def main():
-    seed(SEED)
-    (xs, ys, cxs, cys) = timer(init, "init()")
-    zs = timer(lambda: iterate(xs, ys, cxs, cys), "noise(...)")
+    (s, n_col, n_row, res, fig_x, fig_y, fig_pad) = args()
+    seed(s)
+    n = n_col * n_row
+    (xs, ys, cxs, cys) = timer(lambda: init(n, n_col, n_row), "init(...)")
+    (zs, res_n_col, res_n_row) = timer(
+        lambda: iterate(xs, ys, cxs, cys, n_col, n_row, res),
+        "iterate(...)",
+    )
     timer(lambda: plot_grid(
         xs,
         ys,
         cxs,
         cys,
+        n,
+        n_col,
+        n_row,
+        fig_x,
+        fig_y,
+        fig_pad,
         filepath("grid.png"),
     ), "plot_grid(...)")
     timer(lambda: plot_noise(
-        zs.reshape(RES_N_ROW, RES_N_COL),
+        zs.reshape(res_n_row, res_n_col),
+        fig_x,
+        fig_y,
         filepath("noise.png"),
     ), "plot_noise(...)")
 

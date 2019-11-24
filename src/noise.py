@@ -3,23 +3,16 @@
 from numba import njit
 from numpy import empty, float32
 
-from grid import N_COL, N_ROW
 
-RES = 100
-RES_N_COL = (N_COL - 1) * RES  # x, j
-RES_N_ROW = (N_ROW - 1) * RES  # y, i
-RES_N = RES_N_COL * RES_N_ROW
+@njit
+def select(xs, j, i, n_col):
+    return xs[j + (i * n_col)]
 
 
 @njit
-def select(xs, j, i):
-    return xs[j + (i * N_COL)]
-
-
-@njit
-def dot_grid_gradient(cxs, cys, j, i, x, y):
-    return ((x - float32(j)) * select(cxs, j, i)) + \
-        ((y - float32(i)) * select(cys, j, i))
+def dot_grid_gradient(cxs, cys, n_col, j, i, x, y):
+    return ((x - float32(j)) * select(cxs, j, i, n_col)) + \
+        ((y - float32(i)) * select(cys, j, i, n_col))
 
 
 @njit
@@ -35,7 +28,7 @@ def fade(x):
 
 
 @njit
-def perlin(cxs, cys, x, y):
+def perlin(cxs, cys, n_col, x, y):
     x0 = int(x)
     x1 = x0 + 1
     y0 = int(y)
@@ -44,13 +37,13 @@ def perlin(cxs, cys, x, y):
     sy = fade(y - float32(y0))
     return lerp(
         lerp(
-            dot_grid_gradient(cxs, cys, x0, y0, x, y),
-            dot_grid_gradient(cxs, cys, x1, y0, x, y),
+            dot_grid_gradient(cxs, cys, n_col, x0, y0, x, y),
+            dot_grid_gradient(cxs, cys, n_col, x1, y0, x, y),
             sx,
         ),
         lerp(
-            dot_grid_gradient(cxs, cys, x0, y1, x, y),
-            dot_grid_gradient(cxs, cys, x1, y1, x, y),
+            dot_grid_gradient(cxs, cys, n_col, x0, y1, x, y),
+            dot_grid_gradient(cxs, cys, n_col, x1, y1, x, y),
             sx,
         ),
         sy,
@@ -58,13 +51,17 @@ def perlin(cxs, cys, x, y):
 
 
 @njit
-def iterate(xs, ys, cxs, cys):
-    zs = empty(RES_N, dtype=float32)
-    for ij in range(RES_N):
+def iterate(xs, ys, cxs, cys, n_col, n_row, res):
+    res_n_col = (n_col - 1) * res  # x, j
+    res_n_row = (n_row - 1) * res  # y, i
+    res_n = res_n_col * res_n_row
+    zs = empty(res_n, dtype=float32)
+    for ij in range(res_n):
         zs[ij] = perlin(
             cxs,
             cys,
-            (ij % RES_N_COL) / float32(RES),
-            (ij // RES_N_COL) / float32(RES),
+            n_col,
+            (ij % res_n_col) / float32(res),
+            (ij // res_n_col) / float32(res),
         )
-    return zs
+    return (zs, res_n_col, res_n_row)

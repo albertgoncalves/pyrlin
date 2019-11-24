@@ -7,9 +7,6 @@ from numpy import empty, float32
 
 PI_2 = 2.0 * pi
 UNIT = sqrt((0.5 * 0.5) + (0.5 * 0.5))
-N_COL = 10  # x, j
-N_ROW = 7   # y, i
-N = N_COL * N_ROW
 
 
 def point_on_unit_circle():
@@ -17,15 +14,15 @@ def point_on_unit_circle():
     return (cos(theta) * UNIT, sin(theta) * UNIT)
 
 
-def init():
+def init(n, n_col, n_row):
     kwargs = {"dtype": float32}
-    xs = empty(N, **kwargs)
-    ys = empty(N, **kwargs)
-    cxs = empty(N, **kwargs)
-    cys = empty(N, **kwargs)
-    for ij in range(N):
-        xs[ij] = float32(ij % N_COL)
-        ys[ij] = float32(ij // N_COL)
+    xs = empty(n, **kwargs)
+    ys = empty(n, **kwargs)
+    cxs = empty(n, **kwargs)
+    cys = empty(n, **kwargs)
+    for ij in range(n):
+        xs[ij] = float32(ij % n_col)
+        ys[ij] = float32(ij // n_col)
         (cx, cy) = point_on_unit_circle()
         cxs[ij] = cx
         cys[ij] = cy
