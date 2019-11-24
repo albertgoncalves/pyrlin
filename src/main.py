@@ -82,7 +82,7 @@ def filepath(filename):
 def timer(f, label):
     t = time()
     x = f()
-    print("{:>18} : {:.5f}".format(label, time() - t))
+    print("{:>20} : {:.5f}".format(label, time() - t))
     return x
 
 
@@ -109,11 +109,7 @@ def main():
     (s, n_col, n_row, res, fig_x, fig_y, fig_pad) = args()
     seed(s)
     n = n_col * n_row
-    (xs, ys, cxs, cys) = timer(lambda: init(n, n_col, n_row), "init(...)")
-    (zs, res_n_col, res_n_row) = timer(
-        lambda: iterate(xs, ys, cxs, cys, n_col, n_row, res),
-        "iterate(...)",
-    )
+    (xs, ys, cxs, cys) = timer(lambda: init(n, n_col, n_row), "grid.init(...)")
     timer(lambda: plot_grid(
         xs,
         ys,
@@ -126,13 +122,17 @@ def main():
         fig_y,
         fig_pad,
         filepath("grid.png"),
-    ), "plot_grid(...)")
+    ), "main.plot_grid(...)")
+    (zs, res_n_col, res_n_row) = timer(
+        lambda: iterate(xs, ys, cxs, cys, n_col, n_row, res),
+        "noise.iterate(...)",
+    )
     timer(lambda: plot_noise(
         zs.reshape(res_n_row, res_n_col),
         fig_x,
         fig_y,
         filepath("noise.png"),
-    ), "plot_noise(...)")
+    ), "main.plot_noise(...)")
 
 
 if __name__ == "__main__":
