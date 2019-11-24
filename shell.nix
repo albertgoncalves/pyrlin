@@ -7,6 +7,7 @@ mkShell {
             numba
             numpy
         ]))
+        shellcheck
     ];
     shellHook = ''
         . .shellhook
