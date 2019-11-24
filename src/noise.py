@@ -5,14 +5,14 @@ from numpy import empty, float32
 
 
 @njit
-def select(xs, j, i, n_col):
-    return xs[j + (i * n_col)]
+def select(xs, j, i, n, n_col):
+    return xs[(j + (i * n_col)) % n]
 
 
 @njit
-def dot_grid_gradient(vxs, vys, n_col, j, i, x, y):
-    return ((x - float32(j)) * select(vxs, j, i, n_col)) + \
-        ((y - float32(i)) * select(vys, j, i, n_col))
+def dot_grid_gradient(vxs, vys, n, n_col, j, i, x, y):
+    return ((x - float32(j)) * select(vxs, j, i, n, n_col)) + \
+        ((y - float32(i)) * select(vys, j, i, n, n_col))
 
 
 @njit
@@ -26,7 +26,7 @@ def fade(x):
 
 
 @njit
-def perlin(vxs, vys, n_col, x, y):
+def perlin(vxs, vys, n, n_col, x, y):
     x0 = int(x)
     x1 = x0 + 1
     y0 = int(y)
@@ -35,13 +35,13 @@ def perlin(vxs, vys, n_col, x, y):
     sy = fade(y - float32(y0))
     return lerp(
         lerp(
-            dot_grid_gradient(vxs, vys, n_col, x0, y0, x, y),
-            dot_grid_gradient(vxs, vys, n_col, x1, y0, x, y),
+            dot_grid_gradient(vxs, vys, n, n_col, x0, y0, x, y),
+            dot_grid_gradient(vxs, vys, n, n_col, x1, y0, x, y),
             sx,
         ),
         lerp(
-            dot_grid_gradient(vxs, vys, n_col, x0, y1, x, y),
-            dot_grid_gradient(vxs, vys, n_col, x1, y1, x, y),
+            dot_grid_gradient(vxs, vys, n, n_col, x0, y1, x, y),
+            dot_grid_gradient(vxs, vys, n, n_col, x1, y1, x, y),
             sx,
         ),
         sy,
