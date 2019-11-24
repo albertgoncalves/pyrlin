@@ -18,12 +18,12 @@ def init(n, n_col, n_row):
     kwargs = {"dtype": float32}
     xs = empty(n, **kwargs)
     ys = empty(n, **kwargs)
-    cxs = empty(n, **kwargs)
-    cys = empty(n, **kwargs)
+    vxs = empty(n, **kwargs)
+    vys = empty(n, **kwargs)
     for ij in range(n):
         xs[ij] = float32(ij % n_col)
         ys[ij] = float32(ij // n_col)
-        (cx, cy) = point_on_unit_circle()
-        cxs[ij] = cx
-        cys[ij] = cy
-    return (xs, ys, cxs, cys)
+        (vx, vy) = point_on_unit_circle()
+        vxs[ij] = vx
+        vys[ij] = vy
+    return (xs, ys, vxs, vys)

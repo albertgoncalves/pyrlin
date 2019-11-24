@@ -109,14 +109,14 @@ def main():
     (s, n_col, n_row, res, fig_x, fig_y, fig_pad) = args()
     seed(s)
     n = n_col * n_row
-    (xs, ys, cxs, cys) = timer("grid.init(...)", init, n, n_col, n_row)
+    (xs, ys, vxs, vys) = timer("grid.init(...)", init, n, n_col, n_row)
     timer(
         "main.plot_grid(...)",
         plot_grid,
         xs,
         ys,
-        cxs,
-        cys,
+        vxs,
+        vys,
         n,
         n_col,
         n_row,
@@ -130,8 +130,8 @@ def main():
         iterate,
         xs,
         ys,
-        cxs,
-        cys,
+        vxs,
+        vys,
         n_col,
         n_row,
         res,
