@@ -11,8 +11,8 @@ from grid import init, N, N_COL, N_ROW
 from noise import iterate, RES_N_COL, RES_N_ROW
 
 WD = environ["WD"]
-SEED = 0
-FIGSIZE = (15, 9)
+SEED = 1
+FIGSIZE = (12, 10)
 
 
 def pad_axis(ax, xs, ys, k):

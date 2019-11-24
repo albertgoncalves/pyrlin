@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 # https://en.wikipedia.org/wiki/Perlin_noise
+# https://longwelwind.net/2017/02/09/perlin-noise.html
+# https://rmarcus.info/blog/2018/03/04/perlin-noise.html
 
 from numba import njit
 from numpy import empty, float32
 
 from grid import N_COL, N_ROW
 
-RES = 125
+RES = 150
 RES_N_COL = (N_COL - 1) * RES  # x, j
 RES_N_ROW = (N_ROW - 1) * RES  # y, i
 RES_N = RES_N_COL * RES_N_ROW
@@ -32,13 +34,18 @@ def lerp(a, b, w):
 
 
 @njit
+def fade(x):
+    return (6 * pow(x, 5)) - (15 * pow(x, 4)) + (10 * pow(x, 3))
+
+
+@njit
 def perlin(cxs, cys, x, y):
     x0 = int(x)
     x1 = x0 + 1
     y0 = int(y)
     y1 = y0 + 1
-    sx = x - float32(x0)
-    sy = y - float32(y0)
+    sx = fade(x - float32(x0))
+    sy = fade(y - float32(y0))
     return lerp(
         lerp(
             dot_grid_gradient(cxs, cys, x0, y0, x, y),
