@@ -12,7 +12,7 @@ from noise import iterate, RES_N_COL, RES_N_ROW
 
 WD = environ["WD"]
 SEED = 1
-FIGSIZE = (5, 4)
+FIGSIZE = (15, 12)
 PAD = 0.1
 
 

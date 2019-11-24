@@ -9,7 +9,7 @@ from numpy import empty, float32
 
 from grid import N_COL, N_ROW
 
-RES = 150
+RES = 200
 RES_N_COL = (N_COL - 1) * RES  # x, j
 RES_N_ROW = (N_ROW - 1) * RES  # y, i
 RES_N = RES_N_COL * RES_N_ROW
