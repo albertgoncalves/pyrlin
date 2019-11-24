@@ -11,7 +11,7 @@ from grid import init, N, N_COL, N_ROW
 from noise import iterate, RES_N_COL, RES_N_ROW
 
 WD = environ["WD"]
-SEED = 10
+SEED = 0
 FIGSIZE = (15, 9)
 
 
