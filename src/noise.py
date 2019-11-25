@@ -68,9 +68,8 @@ def iterate(
     zs = empty(res_n, dtype=float32)
     for ij in prange(res_n):
         z = 0
-        amp = 1
-        max_amp = 0
         freq = 1
+        amp = 1
         for _ in range(octaves):
             z += perlin(
                 vxs,
@@ -80,10 +79,9 @@ def iterate(
                 freq * ((ij % res_n_col) / res),
                 freq * ((ij // res_n_col) / res),
             ) * amp
-            max_amp += amp
-            amp *= persistence
             freq *= 2
-        zs[ij] = z / max_amp
+            amp *= persistence
+        zs[ij] = z
     return (zs, res_n_col, res_n_row)
 
 
