@@ -68,9 +68,9 @@ def iterate(
     zs = empty(res_n, dtype=float32)
     for ij in prange(res_n):
         z = 0
-        freq = 1
         amp = 1
         max_amp = 0
+        freq = 1
         for _ in range(octaves):
             z += perlin(
                 vxs,
