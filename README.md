@@ -1,8 +1,8 @@
 # pyrlin
 
-`grid.py`           | `noise.py`
-:------------------:|:-------------------:
-![](cover/grid.png) | ![](cover/noise.png)
+| `grid`              | `noise`              | `map`              |
+:--------------------:|:--------------------:|:------------------:|
+| ![](cover/grid.png) | ![](cover/noise.png) | ![](cover/map.png) |
 
 Needed things
 ---
@@ -12,9 +12,10 @@ Quick start
 ---
 ```
 $ nix-shell
-[nix-shell:path/to/pyrlin]$ python src/main.py 0 5 5 100 4 0.3 6 6 0.2
+[nix-shell:path/to/pyrlin]$ python src/main.py 99 5 5 1000 6 0.465 4 4 0.25
 [nix-shell:path/to/pyrlin]$ open out/grid.png
 [nix-shell:path/to/pyrlin]$ open out/noise.png
+[nix-shell:path/to/pyrlin]$ open out/map.png
 ```
 
 Args
