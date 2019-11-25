@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from numba import njit
-from numpy import empty, float32
+from numba import njit, prange
+from numpy import empty, float32, max, min
 
 
 @njit
@@ -48,7 +48,7 @@ def perlin(vxs, vys, n, n_col, x, y):
     )
 
 
-@njit
+@njit(parallel=True)
 def iterate(
     xs,
     ys,
@@ -66,7 +66,7 @@ def iterate(
     res_n = res_n_col * res_n_row
     res = float32(resolution)
     zs = empty(res_n, dtype=float32)
-    for ij in range(res_n):
+    for ij in prange(res_n):
         z = 0
         freq = 1
         amp = 1
@@ -85,3 +85,9 @@ def iterate(
             freq *= 2
         zs[ij] = z / max_amp
     return (zs, res_n_col, res_n_row)
+
+
+def normalize(xs):
+    xs -= min(xs)
+    xs /= max(xs)
+    return xs

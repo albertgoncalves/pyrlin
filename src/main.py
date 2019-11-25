@@ -9,7 +9,7 @@ from matplotlib.pyplot import arrow, close, savefig, subplots, tight_layout
 from numpy import max, min
 
 from grid import init
-from noise import iterate
+from noise import iterate, normalize
 
 WD = environ["WD"]
 
