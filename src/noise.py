@@ -5,14 +5,10 @@ from numpy import empty, float32, max, min
 
 
 @njit
-def select(xs, j, i, n, n_col):
-    return xs[(j + (i * n_col)) % n]
-
-
-@njit
 def dot_grid_gradient(vxs, vys, n, n_col, j, i, x, y):
-    return ((x - float32(j)) * select(vxs, j, i, n, n_col)) + \
-        ((y - float32(i)) * select(vys, j, i, n, n_col))
+    # NOTE: xs[i, j] -> xs[(j + (i * n_col)) % n]
+    return ((x - float32(j)) * vxs[(j + (i * n_col)) % n]) + \
+        ((y - float32(i)) * vys[(j + (i * n_col)) % n])
 
 
 @njit
