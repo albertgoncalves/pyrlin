@@ -6,7 +6,7 @@
 
 Needed things
 ---
- * [Nix](https://nixos.org/nix/)
+*   [Nix](https://nixos.org/nix/)
 
 Quick start
 ---
@@ -36,7 +36,7 @@ main.py \
 
 Helpful links
 ---
-* https://en.wikipedia.org/wiki/Perlin_noise
-* https://longwelwind.net/2017/02/09/perlin-noise.html
-* https://rmarcus.info/blog/2018/03/04/perlin-noise.html
-* https://flafla2.github.io/2014/08/09/perlinnoise.html
+*   https://en.wikipedia.org/wiki/Perlin_noise
+*   https://longwelwind.net/2017/02/09/perlin-noise.html
+*   https://rmarcus.info/blog/2018/03/04/perlin-noise.html
+*   https://flafla2.github.io/2014/08/09/perlinnoise.html
