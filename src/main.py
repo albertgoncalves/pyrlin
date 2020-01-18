@@ -9,13 +9,13 @@ from matplotlib.colors import BoundaryNorm, ListedColormap
 from matplotlib.pyplot import arrow, close, savefig, subplots, tight_layout
 from numpy import max, min
 
-from grid import init
-from noise import iterate, normalize
+import grid
+import noise
 
 WD = environ["WD"]
 
 
-def parse_args():
+def get_args():
     try:
         return (
             int(argv[1]),
@@ -28,11 +28,18 @@ def parse_args():
             float(argv[9]),
         )
     except:
-        print(" ".join([
-            "$ python {} <seed: int> <n_col: int>".format(argv[0]),
-            "<n_row: int> <resolution: int> <octaves: int>",
-            "<persistence: float> <plot_x: int> <plot_y: int>",
-            "<grid_plot_pad: float>",
+        print("\n".join([
+            "{} SEED N_COL N_ROW RESOLUTION OCTAVES PERSISTENCE PLOT_X PLOT_Y "
+            "GRID_PLOT_PAD".format(argv[0]),
+            "  SEED          : int   (,)",
+            "  N_COL         : int   [2,)",
+            "  N_ROW         : int   [2,)",
+            "  RESOLUTION    : int   [2,)",
+            "  OCTAVES       : int   [1,)",
+            "  PERSISTENCE   : float [0.0,)",
+            "  PLOT_X        : int   [1,)",
+            "  PLOT_Y        : int   [1,)",
+            "  GRID_PLOT_PAD : float [0.0,)",
         ]))
         exit(1)
 
@@ -148,10 +155,10 @@ def timer(label, function, *args, **kwargs):
 
 def main():
     (s, n_col, n_row, resolution, octaves, persistence, figsize, pad) = \
-        parse_args()
+        get_args()
     seed(s)
     n = n_col * n_row
-    (xs, ys, vxs, vys) = timer("grid.init(...)", init, n, n_col, n_row)
+    (xs, ys, vxs, vys) = timer("grid.init(...)", grid.init, n, n_col, n_row)
     timer(
         "main.plot_grid(...)",
         plot_grid,
@@ -168,7 +175,7 @@ def main():
     )
     (zs, res_n_col, res_n_row) = timer(
         "noise.iterate(...)",
-        iterate,
+        noise.iterate,
         xs,
         ys,
         vxs,
@@ -180,7 +187,7 @@ def main():
         octaves,
         persistence,
     )
-    args = (normalize(zs).reshape(res_n_row, res_n_col), figsize)
+    args = (noise.normalize(zs).reshape(res_n_row, res_n_col), figsize)
     timer(
         "main.plot_noise(...)",
         plot_noise,
