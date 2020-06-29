@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+from logging import basicConfig as basic_config, INFO
 from os import environ
 from random import seed
-from time import time
 from sys import argv
 
 from matplotlib.colors import BoundaryNorm, ListedColormap
@@ -11,6 +11,7 @@ from numpy import max, min
 
 import grid
 import noise
+import timer
 
 WD = environ["WD"]
 
@@ -62,6 +63,7 @@ def export(filename):
     close()
 
 
+@timer.info_timing
 def plot_grid(
     xs,
     ys,
@@ -99,6 +101,7 @@ def plot_grid(
     export(filename)
 
 
+@timer.info_timing
 def plot_noise(zs, figsize, filename):
     _, ax = subplots(figsize=figsize)
     ax.matshow(zs, cmap="bone")
@@ -106,6 +109,7 @@ def plot_noise(zs, figsize, filename):
     export(filename)
 
 
+@timer.info_timing
 def plot_map(zs, figsize, filename):
     cmap = ListedColormap([
         "#263878",
@@ -146,22 +150,14 @@ def filepath(filename):
     return "{}/out/{}".format(WD, filename)
 
 
-def timer(label, function, *args, **kwargs):
-    t = time()
-    x = function(*args, **kwargs)
-    print("{:>24} : {:.5f}".format(label, time() - t))
-    return x
-
-
 def main():
+    basic_config(format="%(asctime)s (%(levelname)s) %(message)s", level=INFO)
     (s, n_col, n_row, resolution, octaves, persistence, figsize, pad) = \
         get_args()
     seed(s)
     n = n_col * n_row
-    (xs, ys, vxs, vys) = timer("grid.init(...)", grid.init, n, n_col, n_row)
-    timer(
-        "main.plot_grid(...)",
-        plot_grid,
+    (xs, ys, vxs, vys) = grid.init(n, n_col, n_row)
+    plot_grid(
         xs,
         ys,
         vxs,
@@ -173,9 +169,7 @@ def main():
         pad,
         filepath("grid.png"),
     )
-    (zs, res_n_col, res_n_row) = timer(
-        "noise.iterate(...)",
-        noise.iterate,
+    (zs, res_n_col, res_n_row) = noise.iterate(
         xs,
         ys,
         vxs,
@@ -188,18 +182,8 @@ def main():
         persistence,
     )
     args = (noise.normalize(zs).reshape(res_n_row, res_n_col), figsize)
-    timer(
-        "main.plot_noise(...)",
-        plot_noise,
-        *args,
-        filepath("noise.png"),
-    )
-    timer(
-        "main.plot_map(...)",
-        plot_map,
-        *args,
-        filepath("map.png"),
-    )
+    plot_noise(*args, filepath("noise.png"))
+    plot_map(*args, filepath("map.png"))
 
 
 if __name__ == "__main__":

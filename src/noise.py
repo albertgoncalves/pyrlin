@@ -3,6 +3,8 @@
 from numba import njit, prange
 from numpy import empty, float32, max, min
 
+import timer
+
 
 @njit
 def dot_grid_gradient(vxs, vys, n, n_col, j, i, x, y):
@@ -44,6 +46,7 @@ def perlin(vxs, vys, n, n_col, x, y):
     )
 
 
+@timer.info_timing
 @njit(parallel=True)
 def iterate(
     xs,

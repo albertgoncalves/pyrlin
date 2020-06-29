@@ -5,6 +5,8 @@ from random import random
 
 from numpy import empty, float32
 
+import timer
+
 PI_2 = 2.0 * pi
 UNIT = sqrt((0.5 * 0.5) + (0.5 * 0.5))
 
@@ -14,6 +16,7 @@ def point_on_unit_circle():
     return (cos(theta) * UNIT, sin(theta) * UNIT)
 
 
+@timer.info_timing
 def init(n, n_col, n_row):
     kwargs = {"dtype": float32}
     xs = empty(n, **kwargs)
